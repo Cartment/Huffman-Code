@@ -2,12 +2,17 @@
 #include <deque>
 #include <string>
 #include <vector>
+#include <iomanip>
+#include <cstdint>
 #include <fstream>
 #include <typeinfo>
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
 
+
+
+// Huffman Nodes
 class Node {
 public:
 	char val;
@@ -25,10 +30,15 @@ public:
 
 
 class Huffman{
+
 private:
+	// here are the dict and file paths
 	std::unordered_map<char, std::string> dict;
 	std::string input_path, output_path;
+	bool showDetail;
+
 public:
+	// store_input takes the datas in the inputfile, to build store the sorted key
 	std::unordered_map<char, int> store_input;
 	std::map<int, std::vector<Node*>> to_build;
 
@@ -57,26 +67,30 @@ public:
 			}
 		}
 
-		// for(auto &i:to_build){
-		// 	std::cout<<i.first<<std::endl;
-		// 	for(auto &j:i.second){
-		// 		std::cout<<j->val<<" ";
-		// 	}
-		// 	std::cout<<std::endl<<std::endl;
-		// }
+		// The following comments are mean to check some datas
+		if(showDetail){
+			std::cout<<std::endl<<std::endl;
+			for(auto &i:to_build){
+				std::cout << "Character(s) below occurs " << i.first << " times." << std::endl;
+				for(auto &j:i.second){
+					std::cout<<j->val<<" ";
+				}
+				std::cout<<std::endl<<std::endl;
+			}
+		}
 	}
 
 	void writeFile(std::string i, std::string o){
 		std::ofstream ofs;
-		ofs.open(o);
 		std::ifstream ifs(i);
+		ofs.open(o, std::ios::out | std::ios::binary);
 		char c;
-		ifs >> c;
 		while(!ifs.eof()){
 			if(c == '\n')
 				continue;
+			// for(auto &i:dict[c])
+			// 	ofs<<(i-'0');
 			ofs << (dict[c]);
-			// std::cout << dict[c]<<std::endl;
 			ifs >> c;
 		}
 		ifs.close();
@@ -86,14 +100,16 @@ public:
 
 	void buildHuffmanTree(){
 		while(to_build.size()>1 || to_build.begin()->second.size()>1){
-
-			// std::cout << to_build.begin()->first << " ";
+			
+			if(showDetail)
+				std::cout << "Merge " << std::setw(4) << to_build.begin()->first << " ";
 			Node* ptr1 = to_build.begin()->second.back();
 			to_build.begin()->second.pop_back();
 			if(to_build.begin()->second.empty())
 				to_build.erase(to_build.begin());
 
-			// std::cout << to_build.begin()->first << std::endl;
+			if(showDetail)
+				std::cout << std::setw(4) << to_build.begin()->first << std::endl;
 			Node* ptr2 = to_build.begin()->second.back();
 			to_build.begin()->second.pop_back();
 			if(to_build.begin()->second.empty())
@@ -101,15 +117,16 @@ public:
 
 			Node* parentNode = new Node(-1, ptr1->count + ptr2->count, ptr1, ptr2);
 			to_build[parentNode -> count].emplace_back(parentNode);
-			// std::cout << parentNode -> count<<std::endl;
 		}
+		if(showDetail)
+			std::cout<<std::endl;
 	}
 
 
 	void print_and_build_dict(Node *ptr, std::string s){
-		// std::cout<<" IN \n";
 		if(ptr -> l == nullptr || ptr -> r == nullptr){
-			// std::cout << "Cur val is " << ptr->val << " " << s << std::endl;
+			if(showDetail)
+				std::cout << ptr->val << " has the frequency " << std::setw(4) << ptr->count << " has been encoded as " << s << std::endl;
 			dict[ptr -> val] = s;
 			return;
 		}
@@ -118,7 +135,8 @@ public:
 	}
 
 
-	Huffman(std::string _input_path, std::string _output_path){
+	Huffman(std::string _input_path, std::string _output_path, bool flag){
+		showDetail = flag;
 		input_path = _input_path;
 		output_path = _output_path;
 		readFile_to_m(input_path);
