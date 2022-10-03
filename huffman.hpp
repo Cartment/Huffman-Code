@@ -28,7 +28,7 @@ public:
 	}
 };
 
-// read file and build Huffman Tree
+// This class read file and build Huffman Tree
 class Huffman{
 
 private:
@@ -123,15 +123,15 @@ public:
 	}
 
 
-	void print_and_build_dict(Node *ptr, std::string s){
+	void build_dict(Node *ptr, std::string s){
 		if(ptr -> l == nullptr || ptr -> r == nullptr){
 			if(showDetail)
 				std::cout << ptr->val << " has the frequency " << std::setw(6) << ptr->count << " has been encoded as " << s << std::endl;
 			dict[ptr -> val] = s;
 			return;
 		}
-		print_and_build_dict(ptr -> l, s + "0");
-		print_and_build_dict(ptr -> r, s + "1");
+		build_dict(ptr -> l, s + "0");
+		build_dict(ptr -> r, s + "1");
 	}
 
 
@@ -141,7 +141,7 @@ public:
 		output_path = _output_path;
 		readFile_to_m(input_path);
 		buildHuffmanTree();
-		print_and_build_dict(to_build.begin()->second.back(), std::string(""));
+		build_dict(to_build.begin()->second.back(), std::string(""));
 		writeFile(input_path, output_path);
 	}
 };
