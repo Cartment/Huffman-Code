@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <typeinfo>
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
@@ -44,7 +45,7 @@ public:
 		ifs.close();
 
 		for(auto &i:store_input){
-			std::cout<<i.first<<" "<<i.second<<std::endl;
+			// std::cout<<i.first<<" "<<i.second<<std::endl;
 			if(to_build.find(i.second) != to_build.end()){
 				to_build[i.second].emplace_back(new Node(i.first, i.second, nullptr, nullptr));
 			}
@@ -55,6 +56,14 @@ public:
 				to_build.insert(std::make_pair(i.second ,temp));//
 			}
 		}
+
+		// for(auto &i:to_build){
+		// 	std::cout<<i.first<<std::endl;
+		// 	for(auto &j:i.second){
+		// 		std::cout<<j->val<<" ";
+		// 	}
+		// 	std::cout<<std::endl<<std::endl;
+		// }
 	}
 
 	void writeFile(std::string i, std::string o){
@@ -100,7 +109,7 @@ public:
 	void print_and_build_dict(Node *ptr, std::string s){
 		// std::cout<<" IN \n";
 		if(ptr -> l == nullptr || ptr -> r == nullptr){
-			std::cout << "Cur val is " << ptr->val << " " << s << std::endl;
+			// std::cout << "Cur val is " << ptr->val << " " << s << std::endl;
 			dict[ptr -> val] = s;
 			return;
 		}
@@ -122,18 +131,27 @@ public:
 
 
 
+/* Encode Process */
 
-// 1 3 5 6 12 15 18 21 23 24 29 32 35 55 => 4
-// 4 5 6 12 15 18 21 23 24 29 32 35 55 => 9
-// 6 9 12 15 18 21 23 24 29 32 35 55 => 15
-// 12 15 15 18 21 23 24 29 32 35 55 => 27
-// 15 18 21 23 24 27 29 32 35 55 => 33
-// 21 23 24 27 29 32 33 35 55 => 44
-// 24 27 29 32 33 35 44 55 => 51
-// 29 32 33 35 44 51 55 => 61
-// 33 35 44 51 55 61 => 68
-// 44 51 55 61 68 => 95
-// 55 61 68 95 => 116
-// 68 95 116 => 163
-// 116 163 => 274
-// 274 => End
+
+// 1 3 3 3 5 6 6 6 6 12 15 18 21 21 23 24 24 29 32 35 55
+// 3 3 4 5 6 6 6 6 12 15 18 21 21 23 24 24 29 32 35 55
+// 4 5 6 6 6 6 6 12 15 18 21 21 23 24 24 29 32 35 55
+// 6 6 6 6 6 9 12 15 18 21 21 23 24 24 29 32 35 55
+// 6 6 6 9 12 12 15 18 21 21 23 24 24 29 32 35 55
+// 6 9 12 12 12 15 18 21 21 23 24 24 29 32 35 55
+// 12 12 12 15 15 18 21 21 23 24 24 29 32 35 55
+// 12 15 15 18 21 21 23 24 24 24 29 32 35 55
+// 15 18 21 21 23 24 24 24 27 29 32 35 55
+// 21 21 23 24 24 24 27 29 32 33 35 55
+// 23 24 24 24 27 29 32 33 35 42 55
+// 24 24 27 29 32 33 35 42 47 55
+// 27 29 32 33 35 42 47 48 55
+// 32 33 35 42 47 48 55 56
+// 35 42 47 48 55 56 65
+// 47 48 55 56 65 77
+// 55 56 65 77 95
+// 65 77 95 111
+// 95 111 142
+// 142 206
+// 348
