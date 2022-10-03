@@ -78,6 +78,7 @@ public:
 				std::cout<<std::endl<<std::endl;
 			}
 		}
+		return;
 	}
 
 	void writeFile(std::string i, std::string o){
@@ -120,6 +121,7 @@ public:
 		}
 		if(showDetail)
 			std::cout<<std::endl;
+		return;
 	}
 
 
@@ -132,6 +134,7 @@ public:
 		}
 		build_dict(ptr -> l, s + "0");
 		build_dict(ptr -> r, s + "1");
+		return;
 	}
 
 
