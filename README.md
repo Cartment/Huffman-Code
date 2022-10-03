@@ -1,4 +1,6 @@
 # Huffman-Code
 
-It is a huffman code Test
-But I write it very ugly
+It is a huffman code test.
+
+
+But the code I wrote is very ugly.
