@@ -28,7 +28,7 @@ public:
 	}
 };
 
-
+// read file and build Huffman Tree
 class Huffman{
 
 private:
@@ -102,14 +102,14 @@ public:
 		while(to_build.size()>1 || to_build.begin()->second.size()>1){
 			
 			if(showDetail)
-				std::cout << "Merge " << std::setw(4) << to_build.begin()->first << " ";
+				std::cout << "Merge " << std::setw(7) << to_build.begin()->first << " ";
 			Node* ptr1 = to_build.begin()->second.back();
 			to_build.begin()->second.pop_back();
 			if(to_build.begin()->second.empty())
 				to_build.erase(to_build.begin());
 
 			if(showDetail)
-				std::cout << std::setw(4) << to_build.begin()->first << std::endl;
+				std::cout << std::setw(7) << to_build.begin()->first << std::endl;
 			Node* ptr2 = to_build.begin()->second.back();
 			to_build.begin()->second.pop_back();
 			if(to_build.begin()->second.empty())
@@ -126,7 +126,7 @@ public:
 	void print_and_build_dict(Node *ptr, std::string s){
 		if(ptr -> l == nullptr || ptr -> r == nullptr){
 			if(showDetail)
-				std::cout << ptr->val << " has the frequency " << std::setw(4) << ptr->count << " has been encoded as " << s << std::endl;
+				std::cout << ptr->val << " has the frequency " << std::setw(6) << ptr->count << " has been encoded as " << s << std::endl;
 			dict[ptr -> val] = s;
 			return;
 		}
@@ -173,3 +173,7 @@ public:
 // 95 111 142
 // 142 206
 // 348
+
+
+
+
